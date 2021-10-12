@@ -8,9 +8,7 @@ import { Flight } from '../../entities/flight';
   styleUrls: ['./flight-card.component.css']
 })
 export class FlightCardComponent implements OnInit, OnChanges {
-  debug = false;
-
-  constructor() {}
+  debug = true;
 
   @Input() item: Flight;
   @Input() selected: boolean;
@@ -18,7 +16,7 @@ export class FlightCardComponent implements OnInit, OnChanges {
 
   ngOnChanges(): void {
     if (this.debug) {
-      console.warn('[FlightCardComponent - OnChanges()]');
+      console.warn('[FlightCardComponent - ngOnChanges()]');
       console.log(this.item);
       console.log('selected: ' + this.selected);
     }
