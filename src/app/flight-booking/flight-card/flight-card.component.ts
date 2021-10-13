@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, NgZone, OnChanges, OnInit, Output } from '@angular/core';
 
 import { Flight } from '../../entities/flight';
 
@@ -13,6 +13,8 @@ export class FlightCardComponent implements OnInit, OnChanges {
   @Input() item: Flight;
   @Input() selected: boolean;
   @Output() selectedChange = new EventEmitter<boolean>();
+
+  constructor(private element: ElementRef, private zone: NgZone) {}
 
   ngOnChanges(): void {
     if (this.debug) {
@@ -38,5 +40,18 @@ export class FlightCardComponent implements OnInit, OnChanges {
   deselect(): void {
     this.selected = false;
     this.selectedChange.next(this.selected);
+  }
+
+  blink(): void {
+    // Dirty Hack used to visualize the change detector
+    // let originalColor = this.element.nativeElement.firstChild.style.backgroundColor;
+    this.element.nativeElement.firstChild.style.backgroundColor = 'crimson';
+    //              ^----- DOM-Element
+
+    this.zone.runOutsideAngular(() => {
+      setTimeout(() => {
+        this.element.nativeElement.firstChild.style.backgroundColor = 'white';
+      }, 1000);
+    });
   }
 }
